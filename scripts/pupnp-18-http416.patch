@@ -1,0 +1,19 @@
+diff -Naur pupnp-release-1.8.6/upnp/src/genlib/net/http/webserver.c pupnp-release-1.8.6-patched/upnp/src/genlib/net/http/webserver.c
+--- pupnp-release-1.8.6/upnp/src/genlib/net/http/webserver.c	2019-11-20 23:53:14.000000000 +0000
++++ pupnp-release-1.8.6-patched/upnp/src/genlib/net/http/webserver.c	2020-01-11 18:02:39.442063120 +0000
+@@ -818,8 +818,14 @@
+ 	/* Jump = */
+ 	Ptr = Ptr + 1;
+ 	if (FileLength < 0) {
++		int ret = HTTP_REQUEST_RANGE_NOT_SATISFIABLE;
++		if ((*Ptr == '0') && (*(Ptr+1) == '-') && (*(Ptr+2) == '\0'))
++		{
++			Instr->IsRangeActive = 0;
++			ret = HTTP_OK;
++		}
+ 		free(RangeInput);
+-		return HTTP_REQUEST_RANGE_NOT_SATISFIABLE;
++		return ret;
+ 	}
+ 	if (GetNextRange(&Ptr, &FirstByte, &LastByte) != -1) {
+ 		if (FileLength < FirstByte) {

@@ -17,6 +17,7 @@ fi
 wget https://github.com/mrjimenez/pupnp/archive/release-$VERSION.tar.gz -O pupnp-$VERSION.tgz
 tar -xzvf pupnp-$VERSION.tgz
 cd pupnp-release-$VERSION
+patch -p1 < ../../scripts/pupnp-18-http416.patch && \
 ./bootstrap && \
 ./configure $extraFlags --enable-ipv6 --enable-reuseaddr && \
 make && \
