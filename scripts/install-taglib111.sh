@@ -4,13 +4,13 @@ if ! [ "$(id -u)" = 0 ]; then
     exit 1
 fi
 set -ex
-wget http://taglib.github.io/releases/taglib-1.11.1.tar.gz
-tar -xzvf taglib-1.11.1.tar.gz
+wget https://github.com/scbash/taglib/tarball/topic/multi-tag-separator -O taglib-1.11.1-multi.tgz
+tar -xzvf taglib-1.11.1-multi.tgz
 mkdir taglib-build
 cd taglib-build
 if [[ $CXX == clang++* ]]; then
-	cmake -DCMAKE_CXX_FLAGS="-stdlib=libc++" ../taglib-1.11.1
+	cmake -DCMAKE_CXX_FLAGS="-stdlib=libc++" ../scbash-taglib-fc5ac34
 else
-	cmake ../taglib-1.11.1
+	cmake ../scbash-taglib-fc5ac34
 fi
 make && make install && ldconfig
