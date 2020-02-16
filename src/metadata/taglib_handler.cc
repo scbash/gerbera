@@ -76,15 +76,17 @@ static void addField(metadata_fields_t field, const TagLib::File& file, const Ta
     String value;
     unsigned int i;
 
+    const TagLib::String separator(';');
+
     switch (field) {
     case M_TITLE:
-        val = tag->title();
+        val = tag->title(separator);
         break;
     case M_ARTIST:
-        val = tag->artist();
+        val = tag->artist(separator);
         break;
     case M_ALBUM:
-        val = tag->album();
+        val = tag->album(separator);
         break;
     case M_DATE:
         i = tag->year();
@@ -107,10 +109,10 @@ static void addField(metadata_fields_t field, const TagLib::File& file, const Ta
             return;
         break;
     case M_GENRE:
-        val = tag->genre();
+        val = tag->genre(separator);
         break;
     case M_DESCRIPTION:
-        val = tag->comment();
+        val = tag->comment(separator);
         break;
     case M_TRACKNUMBER:
         i = tag->track();
@@ -126,28 +128,28 @@ static void addField(metadata_fields_t field, const TagLib::File& file, const Ta
         // https://mail.kde.org/pipermail/taglib-devel/2015-May/002729.html
         list = file.properties()["ALBUMARTIST"];
         if (!list.isEmpty())
-            val = list[0];
+            val = list.toString(separator);
         else
             return;
         break;
     case M_COMPOSER:
         list = file.properties()["COMPOSER"];
         if (!list.isEmpty())
-            val = list[0];
+            val = list.toString(separator);
         else
             return;
         break;
     case M_CONDUCTOR:
         list = file.properties()["CONDUCTOR"];
         if (!list.isEmpty())
-            val = list[0];
+            val = list.toString(separator);
         else
             return;
         break;
     case M_ORCHESTRA:
         list = file.properties()["ORCHESTRA"];
         if (!list.isEmpty())
-            val = list[0];
+            val = list.toString(separator);
         else
             return;
         break;
@@ -568,7 +570,7 @@ void TagLibHandler::extractFLAC(TagLib::IOStream* roStream, zmm::Ref<CdsItem> it
                 if (property.isEmpty())
                     continue;
 
-                auto val = property[0];
+                auto val = property[0];  // TODO could add repeated tag separator logic here
                 String value(val.toCString(true));
                 value = sc->convert(value);
                 log_debug(
