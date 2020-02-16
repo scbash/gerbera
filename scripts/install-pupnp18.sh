@@ -5,7 +5,7 @@ if ! [ "$(id -u)" = 0 ]; then
 fi
 set -ex
 
-VERSION="1.8.6"
+VERSION="edd037b"
 
 unamestr=$(uname)
 if [ "$unamestr" == 'FreeBSD' ]; then
@@ -14,9 +14,9 @@ else
    extraFlags="--prefix=/usr/local"
 fi
 
-wget https://github.com/mrjimenez/pupnp/archive/release-$VERSION.tar.gz -O pupnp-$VERSION.tgz
+wget https://github.com/mrjimenez/pupnp/tarball/branch-1.8.x -O pupnp-$VERSION.tgz
 tar -xzvf pupnp-$VERSION.tgz
-cd pupnp-release-$VERSION
+cd pupnp-pupnp-$VERSION
 ./bootstrap && \
 ./configure $extraFlags --enable-ipv6 --enable-reuseaddr && \
 make && \
